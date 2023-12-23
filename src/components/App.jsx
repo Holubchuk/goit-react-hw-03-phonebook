@@ -36,11 +36,24 @@ export class App extends Component {
     });
   };
 
+
   handleDeleteContact = contactId => {
     this.setState({
       contacts: this.state.contacts.filter(contact => contact.id !== contactId),
     });
   };
+
+  componentDidMount() {
+    const parseContacts = localStorage.getItem('contacts');
+    const contacts = JSON.parse(parseContacts) ?? [];
+    this.setState({contacts});
+  }
+
+  componentDidUpdate(prevState) {
+    if (prevState.contacts !== this.state.contacts) {
+      const stringifiedContacts = JSON.stringify(this.state.contacts)
+      localStorage.setItem('contacts', stringifiedContacts)
+  }};
 
   render() {
     const filteredContacts = this.state.contacts.filter(profile =>
@@ -65,5 +78,5 @@ export class App extends Component {
         />
       </div>
     );
-  }
-}
+  }}
+
